@@ -1,0 +1,621 @@
+.resilience {
+}
+.ha-offline {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  padding: 24px;
+  flex-wrap: wrap;
+}
+.ha {
+  padding: clamp(16px, 2.4vw, 28px);
+  display: grid;
+  gap: 22px;
+}
+.ha-top {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 14px;
+  flex-wrap: wrap;
+}
+.seg {
+  display: inline-flex;
+  padding: 4px;
+  border-radius: 3px;
+  border: 1px solid var(--line-2);
+  background: var(--bg-1);
+}
+.seg button {
+  position: relative;
+  padding: 8px 18px;
+  border-radius: 3px;
+  font-family: var(--f-mono);
+  font-size: 12px;
+  color: var(--fg-2);
+}
+.seg button.on {
+  color: var(--bg-0);
+}
+.seg-pill {
+  position: absolute;
+  inset: 0;
+  border-radius: 3px;
+  background: var(--fg);
+}
+.seg button span:not(.seg-pill) {
+  position: relative;
+}
+
+.ha-stage {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(0, 1.1fr) minmax(0, 1fr);
+  gap: 18px;
+  align-items: center;
+}
+.node {
+  --c: var(--fg-3);
+  display: grid;
+  justify-items: center;
+  gap: 12px;
+  padding: 22px 16px;
+  border-radius: 4px;
+  border: 1px solid color-mix(in oklab, var(--c) 30%, var(--line));
+  background: color-mix(in oklab, var(--c) 5%, var(--bg-1));
+  transition:
+    border-color 0.5s,
+    filter 0.5s;
+}
+.node--primary {
+  --c: var(--mint);
+}
+.node--standby {
+  --c: var(--sky);
+}
+.node--down {
+  --c: var(--rose);
+  filter: grayscale(0.7);
+}
+.node--fenced {
+  --c: var(--rose);
+}
+.node--rewinding {
+  --c: var(--amber);
+}
+.node-orb {
+  position: relative;
+  width: 132px;
+  height: 132px;
+}
+.node-orb svg {
+  width: 100%;
+  height: 100%;
+}
+.orb-track {
+  fill: none;
+  stroke: var(--line-2);
+  stroke-width: 1;
+}
+.orb-spin {
+  fill: none;
+  stroke: var(--c);
+  stroke-width: 2;
+  stroke-dasharray: 60 280;
+  stroke-linecap: round;
+  transform-origin: 60px 60px;
+  animation: spin 2.4s linear infinite;
+}
+.node--standby .orb-spin {
+  animation-duration: 4s;
+  stroke-dasharray: 20 30;
+}
+.node--down .orb-spin {
+  animation: none;
+  stroke-dasharray: 4 10;
+  opacity: 0.6;
+}
+.node--fenced .orb-spin {
+  animation: none;
+  stroke-dasharray: none;
+  stroke-width: 4;
+}
+.node--rewinding .orb-spin {
+  animation: spin 0.9s linear infinite reverse;
+}
+.orb-core {
+  fill: color-mix(in oklab, var(--c) 14%, var(--bg-1));
+  stroke: color-mix(in oklab, var(--c) 50%, transparent);
+}
+.node-id {
+  position: absolute;
+  inset: 0;
+  display: grid;
+  place-items: center;
+  align-content: center;
+  gap: 0;
+}
+.node-id b {
+  font-family: var(--f-mono);
+  font-size: 17px;
+}
+.node-id span {
+  font-family: var(--f-mono);
+  font-size: 10.5px;
+  color: var(--fg-3);
+}
+.node-role {
+  font-weight: 600;
+  font-size: 20px;
+  letter-spacing: 0.02em;
+  text-transform: uppercase;
+  color: var(--c);
+}
+.node--down .node-role {
+  text-decoration: line-through;
+}
+.node-lsn {
+  display: grid;
+  gap: 6px;
+  width: 100%;
+  margin: 0;
+  font-size: 12px;
+}
+.node-lsn div {
+  display: flex;
+  justify-content: space-between;
+  gap: 10px;
+  border-top: 1px dashed var(--line);
+  padding-top: 5px;
+}
+.node-lsn dt {
+  color: var(--fg-3);
+}
+.node-lsn dd {
+  margin: 0;
+  color: var(--fg);
+  font-variant-numeric: tabular-nums;
+}
+
+.channel {
+  display: grid;
+  gap: 10px;
+  justify-items: center;
+  --c: var(--sky);
+  --speed: 1.6s;
+}
+.channel--sync {
+  --c: var(--mint);
+  --speed: 1s;
+}
+.channel--lagging {
+  --c: var(--amber);
+  --speed: 3.2s;
+}
+.channel--broken {
+  --c: var(--rose);
+}
+.channel-line {
+  position: relative;
+  width: 100%;
+  height: 14px;
+  border-radius: 4px;
+  background: color-mix(in oklab, var(--c) 10%, transparent);
+  overflow: hidden;
+}
+.channel-line::before {
+  content: '';
+  position: absolute;
+  left: 0;
+  right: 0;
+  top: 50%;
+  height: 1px;
+  background: color-mix(in oklab, var(--c) 50%, transparent);
+}
+.channel-line i {
+  position: absolute;
+  top: 50%;
+  left: 0;
+  width: 18px;
+  height: 4px;
+  margin-top: -2px;
+  border-radius: 4px;
+  background: var(--c);
+  animation: flow var(--speed) linear infinite;
+}
+.channel--broken .channel-line i {
+  animation: none;
+  opacity: 0;
+}
+.channel--broken .channel-line::after {
+  content: '';
+  position: absolute;
+  left: 50%;
+  top: -4px;
+  bottom: -4px;
+  width: 3px;
+  margin-left: -1.5px;
+  background: var(--rose);
+}
+@keyframes flow {
+  from {
+    transform: translateX(-30px);
+  }
+  to {
+    transform: translateX(calc(100cqw + 30px));
+  }
+}
+.channel-line {
+  container-type: inline-size;
+}
+.channel-label {
+  font-size: 11px;
+  color: var(--fg-2);
+  text-align: center;
+}
+.channel-lag {
+  display: flex;
+  gap: 10px;
+  align-items: baseline;
+  font-size: 11px;
+  color: var(--fg-3);
+}
+.channel-lag b {
+  font-size: 18px;
+  font-weight: 500;
+  color: var(--fg);
+}
+
+.ha-metrics {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 12px;
+  border-block: 1px solid var(--line);
+  padding: 14px 0;
+}
+.ha-metrics div {
+  display: grid;
+}
+.ha-metrics > div > span {
+  font-size: 10px;
+  letter-spacing: 0.07em;
+  text-transform: uppercase;
+  color: var(--fg-3);
+}
+.ha-metrics b {
+  font-size: 18px;
+  font-weight: 500;
+  font-variant-numeric: tabular-nums;
+}
+.ha-actions {
+  display: flex;
+  gap: 10px;
+  flex-wrap: wrap;
+  align-items: center;
+}
+.ha-err {
+  font-size: 12px;
+  color: var(--amber);
+  padding: 10px 12px;
+  border-radius: 4px;
+  border: 1px solid color-mix(in oklab, var(--amber) 40%, transparent);
+  background: color-mix(in oklab, var(--amber) 8%, transparent);
+}
+.ha-bottom {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+  gap: 18px;
+}
+.incident {
+  display: grid;
+  gap: 8px;
+  align-content: start;
+  padding: 16px 18px;
+  border-radius: 4px;
+  border: 1px solid var(--line);
+  background: var(--bg-1);
+}
+.incident > .mono {
+  font-size: 10.5px;
+  letter-spacing: 0.07em;
+  text-transform: uppercase;
+  color: var(--fg-3);
+}
+.incident--open {
+  border-color: var(--rose);
+  background: color-mix(in oklab, var(--rose) 8%, var(--bg-1));
+  animation: alarm 1.4s ease-in-out infinite;
+}
+.incident--open > .mono {
+  color: var(--rose);
+}
+.incident--open > b {
+  font-weight: 600;
+  font-size: 44px;
+  line-height: 1;
+  color: var(--rose);
+  font-variant-numeric: tabular-nums;
+}
+@keyframes alarm {
+  50% {
+    box-shadow: 0 0 0 4px color-mix(in oklab, var(--rose) 18%, transparent);
+  }
+}
+.incident p {
+  font-size: 13.5px;
+}
+.incident-nums {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 12px;
+}
+.incident-nums div {
+  display: grid;
+}
+.incident-nums em {
+  font-style: normal;
+  font-family: var(--f-mono);
+  font-size: 10.5px;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--fg-3);
+}
+.incident-nums b {
+  font-weight: 600;
+  font-size: 28px;
+  line-height: 1.1;
+}
+.incident-nums small {
+  font-family: var(--f-mono);
+  font-size: 11px;
+  color: var(--fg-3);
+}
+.ha-log {
+  display: grid;
+  gap: 4px;
+  align-content: start;
+  font-size: 11.5px;
+  max-height: 220px;
+  overflow: auto;
+}
+.ha-log li {
+  display: grid;
+  grid-template-columns: 96px 1fr;
+  gap: 10px;
+  padding: 4px 0;
+  border-bottom: 1px dashed var(--line);
+  color: var(--fg-2);
+}
+.ha-log .lv-warn span:last-child {
+  color: var(--amber);
+}
+.ha-log .lv-error span:last-child {
+  color: var(--rose);
+}
+
+/* RPO/RTO */
+.rr,
+.bk,
+.honest {
+  margin-top: clamp(64px, 10vh, 120px);
+}
+.rr-grid {
+  display: grid;
+  gap: 0;
+  overflow: hidden;
+}
+.rr-timeline {
+  padding: 18px 22px 6px;
+}
+.rr-timeline svg {
+  width: 100%;
+  height: auto;
+  overflow: visible;
+}
+.rr-axis {
+  stroke: var(--line-2);
+  stroke-width: 2;
+}
+.rr-rpo {
+  fill: color-mix(in oklab, var(--amber) 22%, transparent);
+  stroke: var(--amber);
+}
+.rr-rto {
+  fill: color-mix(in oklab, var(--rose) 18%, transparent);
+  stroke: var(--rose);
+}
+.rr-pt {
+  fill: var(--bg-0);
+  stroke: var(--fg);
+  stroke-width: 2;
+}
+.rr-pt--x {
+  stroke: var(--rose);
+  fill: var(--rose);
+}
+.rr-pt--ok {
+  stroke: var(--mint);
+  fill: var(--mint);
+}
+.rr-timeline text {
+  font-family: var(--f-mono);
+  font-size: 13px;
+  fill: var(--fg-2);
+}
+.rr-lbl.rpo {
+  fill: var(--amber);
+}
+.rr-lbl.rto {
+  fill: var(--rose);
+}
+.rr-table {
+  display: grid;
+  border-top: 1px solid var(--line);
+}
+.rr-row {
+  display: grid;
+  grid-template-columns: 1.4fr 0.8fr 0.8fr 1.6fr;
+  gap: 16px;
+  padding: 12px 22px;
+  border-bottom: 1px solid var(--line);
+  font-size: 13.5px;
+  color: var(--fg-2);
+  align-items: center;
+}
+.rr-row span:first-child {
+  color: var(--fg);
+}
+.rr-row--h {
+  font-size: 10.5px;
+  letter-spacing: 0.07em;
+  text-transform: uppercase;
+  color: var(--fg-3);
+}
+.rr-row--h span:first-child {
+  color: var(--fg-3);
+}
+.rr-row--sim {
+  background: repeating-linear-gradient(135deg, color-mix(in oklab, var(--amber) 9%, transparent) 0 6px, transparent 6px 12px);
+  border-bottom: 0;
+}
+.rr-row--sim .tag {
+  margin-left: 8px;
+}
+
+/* Backup pipeline */
+.bk-track {
+  position: relative;
+  display: grid;
+  grid-template-columns: repeat(5, minmax(0, 1fr));
+  gap: 14px;
+}
+.bk-rail {
+  position: absolute;
+  left: 4%;
+  right: 4%;
+  top: 30px;
+  height: 2px;
+  background: var(--line);
+  z-index: -1;
+}
+.bk-rail i {
+  display: block;
+  height: 100%;
+  background: var(--fg);
+  transform-origin: 0 50%;
+}
+.bk-step {
+  display: grid;
+  gap: 8px;
+  align-content: start;
+  padding: 18px;
+  background: var(--bg-1);
+}
+.bk-n {
+  display: grid;
+  place-items: center;
+  width: 26px;
+  height: 26px;
+  border-radius: 50%;
+  border: 1px solid var(--fg);
+  background: var(--bg-0);
+  color: var(--fg);
+  font-size: 10.5px;
+}
+.bk-step h4 {
+  font-weight: 600;
+  font-size: 19px;
+  letter-spacing: -0.02em;
+}
+.bk-step p {
+  font-size: 13px;
+  color: var(--fg-2);
+}
+.bk-step code {
+  font-size: 11px;
+  color: var(--fg-2);
+  padding: 6px 8px;
+  border-radius: 4px;
+  background: var(--bg-0);
+  border: 1px solid var(--line);
+  overflow-wrap: anywhere;
+}
+.bk-note {
+  margin-top: 22px;
+  font-size: 15px;
+  color: var(--fg-2);
+  max-width: 80ch;
+}
+.bk-note b {
+  color: var(--fg);
+}
+
+.honest {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 16px;
+}
+.honest-card {
+  --c: var(--amber);
+  display: grid;
+  gap: 10px;
+  align-content: start;
+  padding: clamp(20px, 3vw, 34px);
+  border-radius: var(--r);
+  border: 1px solid color-mix(in oklab, var(--c) 35%, transparent);
+  background: color-mix(in oklab, var(--c) 5%, var(--bg-1));
+}
+.honest-card--mg {
+  --c: var(--mg);
+}
+.honest-card .mono {
+  font-size: 10.5px;
+  letter-spacing: 0.07em;
+  text-transform: uppercase;
+  color: var(--c);
+}
+.honest-card h3 {
+  font-weight: 600;
+  font-size: clamp(1.3rem, 2.2vw, 1.8rem);
+  line-height: 1.1;
+  letter-spacing: -0.02em;
+}
+.honest-card p {
+  color: var(--fg-2);
+  font-size: 14.5px;
+}
+.honest-card em {
+  color: var(--fg);
+}
+
+@media (max-width: 1000px) {
+  .ha-stage {
+    grid-template-columns: minmax(0, 1fr);
+  }
+  .channel-line {
+    max-width: 320px;
+  }
+  .ha-bottom,
+  .honest {
+    grid-template-columns: minmax(0, 1fr);
+  }
+  .bk-track {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+  .bk-rail {
+    display: none;
+  }
+  .rr-row {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+  .rr-row--h {
+    display: none;
+  }
+  .ha-metrics {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+@media (max-width: 560px) {
+  .bk-track {
+    grid-template-columns: minmax(0, 1fr);
+  }
+}

@@ -1,0 +1,361 @@
+.journey-pin {
+  position: relative;
+}
+.journey-sticky {
+  position: sticky;
+  top: 0;
+  height: 100svh;
+  display: flex;
+  align-items: center;
+  overflow: hidden;
+}
+.journey-frame {
+  display: grid;
+  gap: 18px;
+  padding-top: 64px;
+}
+.journey-top {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+}
+.journey-steps {
+  display: flex;
+  gap: 6px;
+  flex: 1;
+  max-width: 640px;
+}
+.jstep {
+  flex: 1;
+  display: grid;
+  gap: 6px;
+  text-align: left;
+  font-family: var(--f-mono);
+  font-size: 11px;
+  color: var(--fg-3);
+  transition: color 0.3s;
+}
+.jstep i {
+  display: block;
+  height: 3px;
+  border-radius: 3px;
+  background: var(--line-2);
+  position: relative;
+  overflow: hidden;
+}
+.jstep i::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: var(--fg);
+  transform: scaleX(0);
+  transform-origin: 0 50%;
+  transition: transform 0.6s var(--ease-out);
+}
+.jstep.is-done,
+.jstep.is-on {
+  color: var(--fg);
+}
+.jstep.is-done i::after,
+.jstep.is-on i::after {
+  transform: scaleX(1);
+}
+
+
+.journey-diagram {
+  padding: 8px 10px;
+}
+.journey-diagram svg {
+  width: 100%;
+  height: auto;
+  max-height: 34vh;
+  overflow: visible;
+}
+.route {
+  fill: none;
+  stroke: var(--fg-3);
+  stroke-width: 2;
+}
+.route-dash {
+  fill: none;
+  stroke: var(--fg-3);
+  stroke-width: 1;
+  stroke-dasharray: 2 10;
+  animation: dashflow 1.2s linear infinite;
+}
+@keyframes dashflow {
+  to {
+    stroke-dashoffset: -12;
+  }
+}
+.route-prog {
+  fill: none;
+  stroke: var(--accent);
+  stroke-width: 3;
+  stroke-linecap: round;
+}
+.jnode-dot {
+  fill: var(--bg-2);
+  stroke: var(--fg-3);
+  stroke-width: 2;
+  transition:
+    fill 0.4s,
+    stroke 0.4s;
+}
+.jnode-ring {
+  fill: none;
+  stroke: var(--accent);
+  stroke-width: 1;
+  opacity: 0;
+  transform-box: fill-box;
+  transform-origin: center;
+}
+.jnode.on .jnode-dot {
+  fill: var(--fg);
+  stroke: var(--fg);
+}
+.jnode.act .jnode-ring {
+  opacity: 1;
+  animation: ringPulse 1.6s var(--ease-out) infinite;
+}
+@keyframes ringPulse {
+  from {
+    transform: scale(0.6);
+    opacity: 1;
+  }
+  to {
+    transform: scale(1.6);
+    opacity: 0;
+  }
+}
+.jnode-label {
+  font-family: var(--f-sans);
+  font-weight: 700;
+  font-size: 15px;
+  fill: var(--fg-2);
+  transition: fill 0.3s;
+}
+.jnode.on .jnode-label {
+  fill: var(--fg);
+}
+.jnode-sub {
+  font-family: var(--f-mono);
+  font-size: 10.5px;
+  fill: var(--fg-3);
+}
+.txn rect:first-child {
+  fill: color-mix(in oklab, var(--pg) 4%, transparent);
+  stroke: var(--line-2);
+  stroke-width: 1.5;
+  stroke-dasharray: 6 6;
+  transition:
+    stroke 0.4s,
+    fill 0.4s;
+}
+.txn--open rect:first-child,
+.txn--commit rect:first-child {
+  stroke: var(--pg);
+  fill: color-mix(in oklab, var(--pg) 8%, transparent);
+  animation: dashflow 0.8s linear infinite;
+}
+.txn--done rect:first-child {
+  stroke: var(--mint);
+  stroke-dasharray: none;
+  fill: color-mix(in oklab, var(--mint) 6%, transparent);
+}
+.txn-label {
+  font-family: var(--f-mono);
+  font-size: 10.5px;
+  letter-spacing: 0.07em;
+  fill: var(--fg-3);
+}
+.txn--open .txn-label,
+.txn--commit .txn-label {
+  fill: var(--pg);
+}
+.txn--done .txn-label {
+  fill: var(--mint);
+}
+.tbl rect {
+  fill: var(--bg-2);
+  stroke: var(--line-2);
+  transition:
+    fill 0.3s,
+    stroke 0.3s;
+}
+.tbl text {
+  font-family: var(--f-mono);
+  font-size: 10px;
+  fill: var(--fg-3);
+}
+.tbl.on rect {
+  stroke: color-mix(in oklab, var(--pg) 60%, transparent);
+}
+.tbl.on text {
+  fill: var(--fg-2);
+}
+.tbl.act rect {
+  fill: color-mix(in oklab, var(--pg) 22%, transparent);
+  stroke: var(--pg);
+}
+.tbl.act text {
+  fill: var(--fg);
+}
+.commit-badge {
+  opacity: 0;
+  transition: opacity 0.4s;
+}
+.commit-badge.on {
+  opacity: 1;
+}
+.commit-badge rect {
+  fill: var(--mint);
+}
+.commit-badge text {
+  font-family: var(--f-mono);
+  font-size: 10px;
+  font-weight: 700;
+  fill: var(--bg-1);
+}
+
+.journey-bottom {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(0, 1.15fr);
+  gap: 18px;
+  min-height: 0;
+}
+.journey-copy {
+  display: grid;
+  align-content: start;
+  gap: 12px;
+  padding-top: 6px;
+}
+.jc-where {
+  font-size: 12px;
+  letter-spacing: 0.08em;
+  color: var(--fg-3);
+}
+.jc-where b {
+  color: var(--accent-ink);
+}
+.jc-title {
+  font-weight: 600;
+  font-size: clamp(1.35rem, 2.3vw, 2.1rem);
+  line-height: 1.05;
+  letter-spacing: -0.025em;
+}
+.jc-body {
+  color: var(--fg-2);
+  max-width: 52ch;
+}
+.jc-fail {
+  margin-top: 4px;
+  padding: 12px 14px;
+  border-left: 2px solid var(--rose);
+  background: color-mix(in oklab, var(--rose) 6%, transparent);
+  border-radius: 0 10px 10px 0;
+}
+.jc-fail span {
+  font-size: 10.5px;
+  letter-spacing: 0.07em;
+  text-transform: uppercase;
+  color: var(--rose);
+}
+.jc-fail p {
+  font-size: 14.5px;
+  color: var(--fg);
+  margin-top: 2px;
+}
+.journey-code {
+  min-height: 0;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+}
+.journey-code-body {
+  overflow: auto;
+  max-height: 34vh;
+}
+.journey-cta {
+  justify-self: start;
+  font-size: 12px;
+  color: var(--fg-3);
+  letter-spacing: 0.06em;
+  transition: color 0.3s;
+}
+.journey-cta:hover {
+  color: var(--accent-ink);
+}
+
+/* code blocks */
+.code {
+  margin: 0;
+  padding: 16px 18px 18px;
+  font-size: 12.5px;
+  line-height: 1.65;
+  color: var(--fg);
+  white-space: pre;
+  overflow-x: auto;
+  tab-size: 2;
+}
+.c-kw {
+  color: var(--sky);
+}
+.c-str {
+  color: var(--mint);
+}
+.c-num {
+  color: var(--amber);
+}
+.c-com {
+  color: var(--fg-3);
+  font-style: italic;
+}
+.c-hdr {
+  color: var(--violet);
+}
+.c-op {
+  color: var(--amber);
+}
+
+@media (max-width: 900px) {
+  .journey-bottom {
+    grid-template-columns: minmax(0, 1fr);
+    gap: 12px;
+  }
+  .jc-body {
+    display: none;
+  }
+  .journey-code-body {
+    max-height: 26vh;
+  }
+  .code {
+    font-size: 11px;
+    padding: 12px;
+  }
+  .journey-frame {
+    gap: 12px;
+  }
+  .jc-fail p {
+    font-size: 13px;
+  }
+  .journey-top .tag {
+    display: none;
+  }
+}
+@media (max-height: 760px) and (min-width: 901px) {
+  .jc-body {
+    display: none;
+  }
+  .journey-diagram svg {
+    max-height: 30vh;
+  }
+}
+
+.jstep.is-on i::after {
+  background: var(--accent);
+}
+.journey-diagram {
+  background: var(--bg-1);
+}

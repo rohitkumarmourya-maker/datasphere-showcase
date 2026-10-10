@@ -1,0 +1,229 @@
+.lc-grid {
+  display: grid;
+  grid-template-columns: minmax(0, 0.85fr) minmax(0, 1.15fr);
+  gap: 18px;
+  align-items: start;
+}
+.tower {
+  position: relative;
+  display: grid;
+  gap: 10px;
+  isolation: isolate;
+}
+.tower-particles {
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  overflow: hidden;
+  border-radius: var(--r);
+  pointer-events: none;
+}
+.tower-particles i {
+  position: absolute;
+  top: -10px;
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+  background: var(--rose);
+  animation-name: fall;
+  animation-timing-function: cubic-bezier(0.3, 0, 0.7, 1);
+  animation-iteration-count: infinite;
+}
+@keyframes fall {
+  0% {
+    top: -2%;
+    background: var(--rose);
+    opacity: 0;
+  }
+  5% {
+    opacity: 1;
+  }
+  28% {
+    background: var(--amber);
+  }
+  55% {
+    background: var(--sky);
+  }
+  70% {
+    background: var(--fg-3);
+  }
+  74% {
+    opacity: 0.9;
+  }
+  80% {
+    top: 100%;
+    opacity: 0;
+  }
+  100% {
+    top: 100%;
+    opacity: 0;
+  }
+}
+.tier {
+  --c: var(--fg-3);
+  position: relative;
+  padding: 16px 18px;
+  border-radius: 4px;
+  border: 1px solid color-mix(in oklab, var(--c) 35%, transparent);
+  background: color-mix(in oklab, var(--c) 7%, color-mix(in oklab, var(--bg-1) 45%, transparent));
+}
+.tier::before {
+  content: '';
+  position: absolute;
+  left: 0;
+  top: 14px;
+  bottom: 14px;
+  width: 3px;
+  border-radius: 3px;
+  background: var(--c);
+}
+.tier--gone {
+  border-style: dashed;
+}
+.tier-head {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 10px;
+}
+.tier-head b {
+  font-weight: 600;
+  font-size: 24px;
+  letter-spacing: -0.02em;
+  color: var(--c);
+}
+.tier--gone .tier-head b {
+  color: var(--fg-2);
+}
+.tier-head .mono {
+  font-size: 11px;
+  color: var(--fg-2);
+}
+.tier-where {
+  font-family: var(--f-mono);
+  font-size: 12px;
+  color: var(--fg);
+  margin-top: 4px;
+}
+.tier-how {
+  font-size: 13.5px;
+  color: var(--fg-2);
+  margin-top: 4px;
+}
+.lc-right {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr);
+  gap: 18px;
+  min-width: 0;
+}
+.policy-scroll {
+  overflow-x: auto;
+}
+.policy table {
+  width: 100%;
+  min-width: 560px;
+  border-collapse: collapse;
+  font-size: 13px;
+}
+.policy th,
+.policy td {
+  padding: 9px 16px;
+  text-align: left;
+  border-bottom: 1px solid var(--line);
+}
+.policy th {
+  font-family: var(--f-mono);
+  font-weight: 400;
+  font-size: 10.5px;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--fg-3);
+}
+.policy td {
+  color: var(--fg-2);
+  white-space: nowrap;
+}
+.policy td:first-child {
+  color: var(--fg);
+}
+.policy td.never {
+  color: var(--mint);
+}
+.crit {
+  font-size: 9.5px;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  padding: 1px 6px;
+  border-radius: 2px;
+  border: 1px solid var(--fg);
+  color: var(--fg);
+  margin-left: 6px;
+}
+.term {
+  overflow: hidden;
+  background: var(--bg-1);
+}
+.term-bar {
+  display: flex;
+  align-items: center;
+  gap: 7px;
+  padding: 10px 14px;
+  border-bottom: 1px solid var(--line);
+}
+.term-bar i {
+  display: none;
+}
+.term-bar .mono {
+  font-size: 11px;
+  color: var(--fg-3);
+  margin-left: 0;
+  margin-right: auto;
+}
+.term-body {
+  position: relative;
+  min-height: 230px;
+}
+.term-body .code {
+  white-space: pre-wrap;
+  word-break: break-word;
+}
+.caret {
+  display: inline-block;
+  vertical-align: text-bottom;
+  margin-left: 2px;
+  width: 8px;
+  height: 15px;
+  background: var(--fg);
+  animation: tagPulse 0.8s steps(1) infinite;
+}
+.lc-cards {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 14px;
+  margin-top: clamp(40px, 7vh, 80px);
+}
+.lc-card {
+  padding: 20px;
+  border-top: 1px solid var(--line-2);
+  display: grid;
+  gap: 6px;
+}
+.lc-card .mono {
+  font-size: 11px;
+  color: var(--accent-ink);
+}
+.lc-card h4 {
+  font-weight: 600;
+  font-size: 20px;
+  letter-spacing: -0.02em;
+}
+.lc-card p {
+  font-size: 14px;
+  color: var(--fg-2);
+}
+@media (max-width: 1000px) {
+  .lc-grid,
+  .lc-cards {
+    grid-template-columns: minmax(0, 1fr);
+  }
+}
