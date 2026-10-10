@@ -1,0 +1,11 @@
+services:
+  - type: web
+    name: datasphere-showcase
+    runtime: python
+    buildCommand: pip install -r server/requirements.txt
+    startCommand: cd server && uvicorn app.main:app --host 0.0.0.0 --port $PORT
+    envVars:
+      - key: DS_HOST
+        value: "0.0.0.0"
+      - key: PYTHON_VERSION
+        value: 3.12.5
